@@ -1,19 +1,25 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"jsonTest/model"
+	"log"
 	"os"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
+	"github.com/google/go-github/v63/github"
+	"golang.org/x/oauth2"
 )
 
 func main() {
 
 	CreateCommit()
+
+	CreatePullRequest()
 
 	// gitFile, err := http.Get("https://raw.githubusercontent.com/vajid-hussain7/terraformPlan/main/terraform-plan.json")
 	// if err != nil {
@@ -124,7 +130,7 @@ func CreateCommit() {
 		fmt.Println(err)
 	}
 
-	_, err = workTree.Commit("test1 branch first commit ", &git.CommitOptions{})
+	_, err = workTree.Commit("test pr branch second commit ", &git.CommitOptions{})
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -141,4 +147,31 @@ func CreateCommit() {
 
 }
 
-// ErrBranchExists
+func CreatePullRequest() {
+	ctx := context.Background()
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken:os.Getenv("git_token")},
+	)
+	tc := oauth2.NewClient(ctx, ts)
+	client := github.NewClient(tc)
+
+	owner := "vajid-hussain7"
+	repo := "terraformPlan"
+	headBranch := "test1"
+	baseBranch := "main"
+
+	pr := &github.NewPullRequest{
+		Title: github.String("test1 pr2 title"),
+		Head:  github.String(headBranch),
+		Base:  github.String(baseBranch),
+		Body:  github.String("Description of test1 pr2"),
+	}
+
+	prResp, _, err := client.PullRequests.Create(ctx, owner, repo, pr)
+	if err != nil {
+		log.Fatalf("Error creating pull request: %v", err)
+	}
+
+	fmt.Printf("Pull request created: %s\n", *prResp.HTMLURL)
+}
