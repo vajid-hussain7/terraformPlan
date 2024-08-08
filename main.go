@@ -9,6 +9,7 @@ import (
 	"log"
 	internalHttp "net/http"
 	"os"
+	"time"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -37,6 +38,8 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+
+	time.Sleep(time.Second*1)
 
 	// create a commit
 	CreateCommit()
