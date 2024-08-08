@@ -19,7 +19,7 @@ import (
 
 func main() {
 
-	// download file from github server contet
+	// download file from githubusercontent server
 	gitFile, err := internalHttp.Get("https://raw.githubusercontent.com/vajid-hussain7/terraformPlan/main/terraform-plan.json")
 	if err != nil {
 		log.Fatalln(err)
@@ -103,6 +103,7 @@ func FinalResult(resousrseChange []interface{}) model.ResourseChanges {
 	return finalResult
 }
 
+// create commit
 func CreateCommit() {
 
 	// find the local repository from project root eg:=".git"
