@@ -137,7 +137,7 @@ func CreateCommit() {
 	}
 
 	// add changes to state state include all changes "."
-	_, err = workTree.Add("")
+	_, err = workTree.Add("./")
 	if err != nil {
 		fmt.Println(err)
 	}
