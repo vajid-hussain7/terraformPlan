@@ -19,10 +19,6 @@ import (
 
 func main() {
 
-	CreateCommit()
-
-	CreatePullRequest()
-
 	// download file from github server contet
 	gitFile, err := internalHttp.Get("https://raw.githubusercontent.com/vajid-hussain7/terraformPlan/main/terraform-plan.json")
 	if err != nil {
@@ -41,6 +37,13 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+
+	// create a commit
+	CreateCommit()
+
+	// make a new pr to main branch
+	CreatePullRequest()
+
 
 	// var json interface{}
 	// var MainField map[string]interface{}
