@@ -9,7 +9,6 @@ import (
 	"log"
 	internalHttp "net/http"
 	"os"
-	"time"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -39,14 +38,11 @@ func main() {
 		return
 	}
 
-	time.Sleep(time.Second*1)
-
 	// create a commit
 	CreateCommit()
 
 	// make a new pr to main branch
-	CreatePullRequest()
-
+	// CreatePullRequest()
 
 	// var json interface{}
 	// var MainField map[string]interface{}
@@ -141,7 +137,7 @@ func CreateCommit() {
 	}
 
 	// add changes to state state include all changes "."
-	_, err = workTree.Add(".")
+	_, err = workTree.Add("")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -191,7 +187,7 @@ func CreatePullRequest() {
 		Body:  github.String("Description of test1 pr2"),
 	}
 
-	// create a pull request 
+	// create a pull request
 	prResp, _, err := client.PullRequests.Create(ctx, owner, repo, pr)
 	if err != nil {
 		log.Fatalf("Error creating pull request: %v", err)
